@@ -123,4 +123,3 @@ CREATE TABLE invoice_items
     FOREIGN KEY (InvoiceId) REFERENCES invoices (InvoiceId),
     FOREIGN KEY (TrackId) REFERENCES tracks (TrackId)
 );
-
