@@ -27,7 +27,7 @@ limit 5;
 -- 4. Вывести все названия файлов с фотографиями, у которых размер файла не превышает 100 000
 select m.filename 
 from media m
-where m.`size` <= 100000;
+where m.`size` <= 100000 and m.media_type_id = 1;
 
 -- 5. Вывести все города, в которых находятся пользователи
 select p.hometown
