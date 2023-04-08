@@ -40,7 +40,6 @@ from media m
 where m.user_id = 2;
 
 -- 7. Посчитайте количество женщин и количество мужчин
-select count(p.gender)  from profiles p where p.gender = 'f'; 
 select *
 from (
 	select
