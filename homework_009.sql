@@ -33,9 +33,9 @@ CREATE TEMPORARY TABLE AmountOfFiles
 -- пользовательские атрибуты ( name = firstname+lastname, age(возраст))
 CREATE VIEW GroupedUsersByHometown
 AS
-    SELECT
-        concat(u.firstname, " ", u.lastname) AS 'name',
-        (
+	SELECT
+		concat(u.firstname, " ", u.lastname) AS 'name',
+		(
 	 	YEAR(current_date) - YEAR(p.birthday) -
 		(date_format(current_date, '%m%d') < date_format
 (p.birthday, '%m%d'))
@@ -50,35 +50,36 @@ ORDER BY p.hometown;
 -- имена пользователей
 CREATE VIEW Grouped_Users_By_Communities
 AS
-    SELECT
-        concat(u.firstname, " ", u.lastname) AS 'Name',
-        c.name AS 'Community'
-    FROM
-        users u
-        JOIN users_communities uc ON uc.user_id = u.id
-        JOIN communities c ON c.id = uc.community_id
-    ORDER BY c.name;
+	SELECT
+		concat(u.firstname, " ", u.lastname) AS 'Name',
+		c.name AS 'Community'
+	FROM
+		users u
+		JOIN users_communities uc ON uc.user_id = u.id
+		JOIN communities c ON c.id = uc.community_id
+	ORDER BY c.name;
 
 
 -- Создайте транзакцию, которая будет вводить нового пользователя:
 -- Jack Nicholson 22-04-1937 Neptune JackNIk@gmail.com +123456789
 START TRANSACTION;
 INSERT INTO users
-    (firstname, lastname, email, phone)
+	(firstname, lastname, email, phone)
 values('Jack', 'Nicholson', 'JackNIk@gmail.com', 123456789);
 INSERT INTO profiles
-    (user_id, birthday)
+	(user_id, birthday)
 VALUES
-    (101, "1937-04-22");
+	(101, "1937-04-22");
 COMMIT;
 
 -- Создайте транзакцию, которая изменяет город пользователя по имени 
+-- Frederik Upton на NewYork
 START TRANSACTION;
 UPDATE profiles
-SET hometown='Tokyo'
+SET hometown='New York'
 WHERE EXISTS (
 	SELECT u.firstname
 FROM users u
-WHERE u.firstname='Jack');
+WHERE u.firstname='Frederik' and u.lastname = 'Upton');
 COMMIT;
 	
