@@ -46,10 +46,11 @@ DELIMITER ;
 -- и выводит на экран ошибку "Invalid user data"
 DELIMITER //
 CREATE TRIGGER validating_users BEFORE INSERT ON vk.users
-IF 	(isnull(NEW.firstname) OR
-	isnull(NEW.lastname) OR
-	isnull(NEW.email) OR
-	NEW.phone LIKE '%7%')
+-- IF 	(isnull(NEW.firstname) OR
+-- 	isnull(NEW.lastname) OR
+-- 	isnull(NEW.email) OR
+-- 	NEW.phone LIKE '%7%')
+IF NEW.firstname IS NULL
 THEN SIGNAL SQLSTATE '45000' SET message_text = 'Invalid user data';
 END IF //
 DELIMITER ;
@@ -86,7 +87,7 @@ BEGIN
 		WHEN cur_time BETWEEN '12:00:00' AND '18:00:00' THEN SET `result`='Добрый день';
 		WHEN cur_time BETWEEN '18:00:00' AND '00:00:00' THEN SET `result`='Добрый вечер';
 		WHEN cur_time BETWEEN '00:00:00' AND '06:00:00' THEN SET `result`='Доброй ночи';
-	END;
-	RETURNS `result`;
+	END CASE;
+	RETURN `result`;
 END //
 DELIMITER ;
