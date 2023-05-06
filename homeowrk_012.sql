@@ -46,13 +46,15 @@ DELIMITER ;
 -- и выводит на экран ошибку "Invalid user data"
 DELIMITER //
 CREATE TRIGGER validating_users BEFORE INSERT ON vk.users
--- IF 	(isnull(NEW.firstname) OR
--- 	isnull(NEW.lastname) OR
--- 	isnull(NEW.email) OR
--- 	NEW.phone LIKE '%7%')
-IF NEW.firstname IS NULL
-THEN SIGNAL SQLSTATE '45000' SET message_text = 'Invalid user data';
-END IF //
+FOR EACH ROW
+BEGIN 
+	IF 	(isnull(NEW.firstname)  AND 
+		isnull(NEW.lastname)    AND 
+		isnull(NEW.email) 		AND 
+		NEW.phone NOT LIKE '%7%')
+	THEN SIGNAL SQLSTATE '45000' SET message_text = 'Invalid user data';
+	END IF;
+END //
 DELIMITER ;
 
 -- Создайте функцию, которая удаляет пользователя по id вместе с его профилем
